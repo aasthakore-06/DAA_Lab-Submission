@@ -1,0 +1,37 @@
+def nextValue(k, n, m, graph, x):
+    while True:
+        x[k] = (x[k] + 1) % (m + 1) 
+        if x[k] == 0:
+            return 
+        
+        for j in range(n):
+            if graph[k][j] != 0 and x[k] == x[j]: 
+                break
+        else:
+            return 
+
+def mColoring(k, n, m, graph, x):
+    while True:
+        nextValue(k, n, m, graph, x)
+        if x[k] == 0:
+            return False 
+        if k == n - 1:
+            return True 
+        else:
+            if mColoring(k + 1, n, m, graph, x):
+                return True
+    return False
+
+if __name__ == "__main__":
+    n = int(input("Enter number of vertices: "))
+    print("Enter adjacency matrix:")
+    graph = [list(map(int, input().split())) for _ in range(n)]
+    m = int(input("Enter number of colors available: "))
+    x = [0] * n 
+
+    if mColoring(0, n, m, graph, x):
+        print("\nColor assigned to each vertex:")
+        for i in range(n):
+            print(f"Vertex {i} → Color {x[i]}")
+    else:
+        print("\nNo solution exists with the given number of colors.")
